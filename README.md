@@ -2,6 +2,10 @@
 
 This library should be used with an Echo Server. This will automate the creating of multiple WebRTC connections to the Echo Server and calculate which one is the fastest by using the data-channel.
 
+## Echo Server
+We have an [echo server](https://github.com/subspace-com/subspace_webrtc_echoserver) ready but you can use any WebRTC server that echos back the data send on the data channel.\
+This server needs to be able to receive an offer on the `/offer` endpoint and return an answer. It also needs to echo back the information sent on the data-channel.
+
 ## Installing and using the lib
 
 ### Install
