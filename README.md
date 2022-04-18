@@ -1,5 +1,3 @@
-> WIP
-
 # Echo test JS library
 
 This library should be used with an Echo Server. This will automate the creating of multiple WebRTC connections to the Echo Server and calculate which one is the fastest by using the data-channel.
@@ -9,9 +7,9 @@ This library should be used with an Echo Server. This will automate the creating
 ### Install
 
 ```bash
-npm install --save INSERT PUBLISHED NAME HERE
+npm install --save @subspacecom/echo-test
 # or
-yarn add INSERT PUBLISHED NAME HERE
+yarn add @subspacecom/echo-test
 ```
 
 ### Basic usage
@@ -19,7 +17,7 @@ yarn add INSERT PUBLISHED NAME HERE
 The basic usage of the lib requires 2 parameters: an array of the RTCConfigs that needs to be tested, and the echo test options. Example: `echo(rtcConfigs, options)`.
 
 ```typescript
-  import { echo } from 'INSERT PUBLISHED NAME HERE';
+  import { echo } from '@subspacecom/echo-test';
 
   const rtcConfigs = [
     { iceServers: [{ urls: ['stun:stun.l.google.com:193028'] }] },
@@ -32,6 +30,7 @@ The basic usage of the lib requires 2 parameters: an array of the RTCConfigs tha
 
   echo(rtcConfigs, options)
     .then((res) => console.log(res))
+    .catch(console.error)
 ```
 
 The output to this call should be similar to this:
@@ -105,4 +104,4 @@ Those commands are meant to be used by the CI/CD and before publishing the lib. 
 ### Publishing
 
 When publishing, the app will be built and tested to avoid errors.
-The `yarn publish` command will be added later.
+Publish it with `yarn publish --access public`.

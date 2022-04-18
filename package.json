@@ -1,12 +1,15 @@
 {
-  "name": "echo-test",
-  "version": "0.0.0",
-  "description": "A JS lib to be used with Subspace's WebRTC echo test",
+  "name": "@subspacecom/echo-test",
+  "version": "0.1.3",
+  "description": "A JS lib to be used with Subspace's WebRTC echo server",
+  "files": [
+    "dist/**/*"
+  ],
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "license": "MIT",
   "engines": {
-    "node": "^16.0.0",
+    "node": ">=14.0.0",
     "yarn": "^1.22.15"
   },
   "scripts": {
@@ -21,7 +24,8 @@
     "test:watch": "jest --watch --runInBand",
     "clean": "rimraf dist",
     "ci": "yarn test && yarn lint && yarn prettier && yarn build",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "prepublish": "yarn ci"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
