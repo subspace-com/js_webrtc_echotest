@@ -1,0 +1,68 @@
+{
+  "name": "echo-test",
+  "version": "0.0.0",
+  "description": "A JS lib to be used with Subspace's WebRTC echo test",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "engines": {
+    "node": "^17.8.0",
+    "yarn": "^1.22.15"
+  },
+  "scripts": {
+    "start": "webpack serve",
+    "build": "tsc",
+    "prebuild": "yarn clean",
+    "lint": "eslint '**/*.{js,jsx,ts,tsx}' --max-warnings=0",
+    "lint:fix": "eslint '**/*.{js,jsx,ts,tsx}' --max-warnings=0 --fix",
+    "prettier": "prettier '**/*.{js,jsx,ts,tsx}' --check",
+    "prettier:fix": "prettier '**/*.{js,jsx,ts,tsx}' --write",
+    "test": "jest --coverage --passWithNoTests --runInBand",
+    "test:watch": "jest --watch --runInBand",
+    "clean": "rimraf dist",
+    "ci": "yarn test && yarn lint && yarn prettier && yarn build",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write",
+      "eslint --fix --max-warnings=0"
+    ]
+  },
+  "devDependencies": {
+    "@swc/core": "^1.2.161",
+    "@types/jest": "^27.4.1",
+    "@types/react-dom": "^17.0.14",
+    "@types/webrtc": "^0.0.31",
+    "@typescript-eslint/eslint-plugin": "^5.17.0",
+    "@typescript-eslint/parser": "^5.17.0",
+    "css-loader": "^6.7.1",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-react": "^7.28.0",
+    "eslint-webpack-plugin": "^3.1.1",
+    "html-webpack-plugin": "^5.5.0",
+    "husky": "^7.0.4",
+    "install": "^0.13.0",
+    "jest": "^27.5.1",
+    "lint-staged": "^12.3.7",
+    "postcss": "^8.4.12",
+    "postcss-loader": "^6.2.1",
+    "postcss-preset-env": "^7.4.3",
+    "prettier": "^2.6.1",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "rimraf": "^3.0.2",
+    "style-loader": "^3.3.1",
+    "swc-loader": "^0.1.15",
+    "ts-jest": "^27.1.4",
+    "typescript": "^4.6.3",
+    "webpack": "^5.70.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-server": "^4.7.4"
+  },
+  "dependencies": {}
+}

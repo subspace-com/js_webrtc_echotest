@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "jsx": "react-jsx",
+    "module": "esnext",
+    "baseUrl": "lib",
+    "paths": {},
+    "types": ["jest", "node"],
+    "typeRoots": ["./types", "./node_modules/@types"],
+    "declaration": true,
+    "outDir": "dist",
+    "removeComments": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true
+  },
+  "include": [
+    "lib/**/*",
+  ],
+  "exclude": [
+    "example/**/*",
+    "node_modules",
+    "dist"
+  ]
+}
