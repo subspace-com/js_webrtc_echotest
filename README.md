@@ -66,7 +66,7 @@ The output to this call should be similar to this:
 
 After that it's up to you on how to use it.\
 The easy route is to use the first configuration from the `sorted` key, entries are already sorted from faster to slower by `avgRTT`, since latency is one major factor affecting a WebRTC connection's quality.
-If you want to, you could pick any of the sorted items accordingly to your own criteria. For example, consider consider using the historically more stable configuration even when the latency is slightly worse.
+If you want to, you could pick any of the sorted items accordingly to your own criteria. For example, consider using the historically more stable configuration even when the latency is slightly worse.
 
 ### Options
 
@@ -93,7 +93,7 @@ It's a good idea to use it to develop and test the lib but the compilation proce
 
 - Start the build watch with `yarn start`.
 - Test it with `yarn test:watch`.
-- The dev server should fix the lint errors automatically, but you can the `yarn lint:fix` if you want to do it manually.
+- The pre commit should fix the lint errors automatically, but you can use the `yarn lint:fix` if you want to do it manually.
 
 > Note: When a html or css file is changed you need to restart the server or manually run the `yarn copy` command
 
