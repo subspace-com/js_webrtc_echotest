@@ -2,10 +2,19 @@ import { PeerWithStats, EchoConfig, EchoResponse, Stats } from './types';
 import createPeer from './create-peer';
 import pingTest from './ping-test';
 
+export const defaultSorter = (a: PeerWithStats, b: PeerWithStats) => a.avgRTT - b.avgRTT;
+
 export const echo = (rtcConfigs: RTCConfiguration[], config: EchoConfig): Promise<EchoResponse> =>
   new Promise((resolve, reject) => {
     const initialTime = performance.now();
-    const { signalUrl, timeout = 2500, iceTimeout = 1000, dataTimeout = 100, requests = 10 } = config || {};
+    const {
+      signalUrl,
+      timeout = 2500,
+      iceTimeout = 1000,
+      dataTimeout = 100,
+      requests = 10,
+      sorter = defaultSorter,
+    } = config || {};
 
     if (rtcConfigs.length === 0) reject(new Error('Monitor was called with no peer configurations'));
     if (!signalUrl) reject(new Error('Monitor was called with no signal url'));
@@ -25,25 +34,17 @@ export const echo = (rtcConfigs: RTCConfiguration[], config: EchoConfig): Promis
     };
 
     const sendResults = () => {
-      const sorted = passedPeers
-        .sort((a, b) => {
-          if (Math.round(a.avgRTT) === Math.round(b.avgRTT)) {
-            return a.iceGatheringTime + a.iceConnectionTime - (b.iceGatheringTime + b.iceConnectionTime);
-          }
-
-          return a.avgRTT - b.avgRTT;
-        })
-        .reduce((acc, cur) => {
-          acc.push([
-            cur.rtcConfig,
-            {
-              iceGatheringTime: Math.round(cur.iceGatheringTime),
-              iceConnectionTime: Math.round(cur.iceConnectionTime),
-              avgRTT: Math.round(cur.avgRTT),
-            },
-          ]);
-          return acc;
-        }, [] as [RTCConfiguration, Stats][]);
+      const sorted = passedPeers.sort(sorter).reduce((acc, cur) => {
+        acc.push([
+          cur.rtcConfig,
+          {
+            iceGatheringTime: Math.round(cur.iceGatheringTime),
+            iceConnectionTime: Math.round(cur.iceConnectionTime),
+            avgRTT: Math.round(cur.avgRTT),
+          },
+        ]);
+        return acc;
+      }, [] as [RTCConfiguration, Stats][]);
 
       resolve({ sorted, failed: failedPeers, totalTime: Math.round(performance.now() - initialTime) });
 

@@ -33,7 +33,7 @@ The basic usage of the lib requires 2 parameters: an array of the RTCConfigs tha
   }
 
   echo(rtcConfigs, options)
-    .then((res) => console.log(res))
+    .then(console.log)
     .catch(console.error)
 ```
 
@@ -66,7 +66,7 @@ The output to this call should be similar to this:
 
 After that it's up to you on how to use it.\
 The easy route is to use the first configuration from the `sorted` key, entries are already sorted from faster to slower by `avgRTT`, since latency is one major factor affecting a WebRTC connection's quality.
-If you want to, you could pick any of the sorted items accordingly to your own criteria. For example, consider using the historically more stable configuration even when the latency is slightly worse.
+If you want to, you could change the way the items are sorted accordingly to your own criteria. For example, consider using the historically more stable configuration even when the latency is slightly worse.
 
 ### Options
 
@@ -77,6 +77,7 @@ If you want to, you could pick any of the sorted items accordingly to your own c
 | iceTimeout | `number` | no | `1000` ms | This is the total time that the peer will have to connect. This goes from the Peer creation to the ice gathering and ice connection. |
 | dataTimeout | `number` | no | `100` ms | This represents the timeout for each of the requests made by the data channel. When it times out the defined value is added to the average calculation. |
 | requests | `number` | no | 10 | This is the amount of times data will be send using the data channel before calculating the average. |
+| sorter | `function` | no | (a, b) => a.avgRTT - b.avgRTT | This function is used to sort the best configuration using the ping data. In addition to the `avgRTT`, the props also have the `iceGatheringTime`, `iceConnectionTime`, and the `rtcConfig` which is the original configuration used to start the test. |
 
 ## Contributing
 

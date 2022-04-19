@@ -24,6 +24,8 @@ export type EchoConfig = {
   iceTimeout?: number;
   dataTimeout?: number;
   requests?: number;
+  // eslint-disable-next-line no-unused-vars
+  sorter?: (a: PeerWithStats, b: PeerWithStats) => number;
 };
 
 export type EchoResponse = {
