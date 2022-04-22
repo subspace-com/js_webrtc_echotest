@@ -1,11 +1,11 @@
 # Echo test JS library
 
-This library should be used with an Echo Server. This will automate the creating of multiple WebRTC connections to the Echo Server and calculate which one is the fastest by using the data-channel.
+This library should be used with an Echo Server. This will automate the creating of multiple WebRTC connections to the Echo Server and calculate which one is the fastest by using a DataChannel.
 
 ## Echo Server
 
-We have an [echo server](https://github.com/subspace-com/subspace_webrtc_echoserver) ready but you can use any WebRTC server that echos back the data send on the data channel.\
-This server needs to be able to receive an offer on the `/offer` endpoint and return an answer. It also needs to echo back the information sent on the data-channel.
+We have an [echo server](https://github.com/subspace-com/subspace_webrtc_echoserver) implementation available but you can use any WebRTC server that echos back the data sent on the DataChannel.\
+This server needs to be able to receive an SDP offer on the `/offer` HTTP endpoint and return an SDP answer. It also needs to echo back the information received on the DataChannel.
 
 ## Installing and using the lib
 
@@ -19,7 +19,7 @@ yarn add @subspacecom/echo-test
 
 ### Basic usage
 
-The basic usage of the lib requires 2 parameters: an array of the RTCConfigs that needs to be tested, and the echo test options. Example: `echo(rtcConfigs, options)`.
+The basic usage of the lib requires 2 parameters: an array of the RTCConfigs that need to be tested, and the echo test options. Example: `echo(rtcConfigs, options)`.
 
 ```typescript
   import { echo } from '@subspacecom/echo-test';
@@ -66,23 +66,23 @@ The output to this call should be similar to this:
 ```
 
 After that it's up to you on how to use it.\
-The easy route is to use the first configuration from the `sorted` key, entries are already sorted from faster to slower by `avgRTT`, since latency is one major factor affecting a WebRTC connection's quality.
-If you want to, you could change the way the items are sorted accordingly to your own criteria. For example, consider using the historically more stable configuration even when the latency is slightly worse.
+The easy route is to use the first configuration from the `sorted` key. Entries are already sorted from faster to slower by `avgRTT` (average measured RoundTripTie), since latency is one major factor affecting a WebRTC connection's quality.
+If you want to, you could change the way the items are sorted accordingly to your own criteria. For example, consider using the historically more stable configuration even when the current estimated latency is slightly worse.
 
 ### Options
 
 | Parameter | Type | Required | Default | Description |
 | - | - | - | - | - |
-| signalUrl | `string` | yes | `undefined` | This the endpoint of the echo server, when using our echo server the offer endpoint will be `http://your-url.com/offer`. |
-| timeout | `number` | no | `2500` ms | This parameter limits the time that the test will run for. Once the limit is reached it will return all the successful tests under `sorted` and all unfinished tests under `failed`. |
-| iceTimeout | `number` | no | `1000` ms | This is the total time that the peer will have to connect. This goes from the Peer creation to the ice gathering and ice connection. |
-| dataTimeout | `number` | no | `100` ms | This represents the timeout for each of the requests made by the data channel. When it times out the defined value is added to the average calculation. |
-| requests | `number` | no | 10 | This is the amount of times data will be send using the data channel before calculating the average. |
-| sorter | `function` | no | (a, b) => a.avgRTT - b.avgRTT | This function is used to sort the best configuration using the ping data. In addition to the `avgRTT`, the props also have the `iceGatheringTime`, `iceConnectionTime`, and the `rtcConfig` which is the original configuration used to start the test. [See Examples](#sorter-examples). |
+| signalUrl | `string` | yes | `undefined` | This is the HTTP endpoint of the echo server, something like `https://your-url.com/offer`. |
+| timeout | `number` | no | `2500` ms | This parameter limits the time that the test will run for. Once the limit is reached it will return all the successful tests under `sorted` and all unfinished or failed tests under `failed`. |
+| iceTimeout | `number` | no | `1000` ms | This is the total time that the peer will have to connect. This goes from the Peer creation to the ICE gathering and ICE connection completion. |
+| dataTimeout | `number` | no | `100` ms | This represents the timeout for each of the requests made over the DataChannel. When it times out the defined value is added to the average calculation. |
+| requests | `number` | no | 10 | This is the amount of times data will be sent using the DataChannel before calculating the average. |
+| sorter | `function` | no | (a, b) => a.avgRTT - b.avgRTT | This function is used to sort the best configuration using the data exchanged. In addition to the `avgRTT`, the props also have the `iceGatheringTime`, `iceConnectionTime`, and the `rtcConfig` which is the original configuration used to start the test. [See Examples](#sorter-examples). |
 
 #### Sorter examples
 
-Giving subspace domains 15ms advantage over other domains:
+Giving the Subspace configuration a 15ms advantage over the other:
 
 ```typescript
 const isSubspace = (rtcConfig: RTCConfiguration) => {
@@ -99,7 +99,7 @@ const sorter = (a, b) => {
 // Then pass the sorter on the echo configuration.
 ```
 
-Giving subspace domains 10% advantage over other domains:
+Giving the Subspace configuration a 10% advantage over the other:
 
 ```typescript
 const isSubspace = (rtcConfig: RTCConfiguration) => {
