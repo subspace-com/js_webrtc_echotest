@@ -1,6 +1,6 @@
 {
   "name": "@subspacecom/echo-test",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "A JS lib to be used with Subspace's WebRTC echo server",
   "repository": {
     "type": "git",
